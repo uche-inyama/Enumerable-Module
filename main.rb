@@ -47,16 +47,49 @@ module Enumerable
       return count
     end
 
-    def my_map
+    def my_map(arg=nil)
     	arr = []
-    	self.my_each{ | element | arr << yield(element)}
+    	if arg == nil
+    	   self.my_each_with_index{ | element, index | arr << yield(element)}
+    	elsif arg != nil
+    		self.my_each_with_index { |element, index| arr << arg.call(element)}
+    	end
     	return arr
+    end
+
+    def my_inject(initial = nil)
+      
+      if initial == nil 
+        accumulator = self.first
+      else
+        accumulator = initial
+      end
+
+      self.my_each do |element|
+        accumulator = yield(accumulator,element)
+      end
+      return accumulator
     end
 end
 
 
 
+def multiply_els(numberList)
+  return numberList.my_inject(1) { |acc, number| acc*number}
+end
+
+
+var1 = multiply_els([2,8,10])
+print var1
+puts ""
 
 
 
+arg = Proc.new{|string| string.upcase}
 
+# var2 = ["a", "b", "c"].my_map(arg)
+# print var2
+
+
+
+# p [1,2,4,5,6].map{|i, e|  i * 2 }
