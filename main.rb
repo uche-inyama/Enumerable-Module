@@ -26,8 +26,34 @@ module Enumerable
 	def my_any? 
 		output = false
 		self.my_each {|item| output = true if yield(item)}
+		return output
 	end
+
+	def my_none?
+		output = true
+		self.my_each { | item | output = false if yield(item) }
+		return output
+	end
+
+	def my_count(item = nil)
+      count = 0
+      if item != nil
+        self.my_each{ |element| count += 1 if element == item }
+      elsif block_given?
+        self.my_each{ |element| count += 1 if yield(element)}
+      else
+        count = self.length 
+      end
+      return count
+    end
+
+    def my_map
+    	arr = []
+    	self.my_each{ | element | arr << yield(element)}
+    	return arr
+    end
 end
+
 
 
 
