@@ -47,14 +47,17 @@ module Enumerable
       return count
     end
 
-    def my_map(arg=nil)
-    	arr = []
-    	if arg == nil
-    	   self.my_each_with_index{ | element, index | arr << yield(element)}
-    	elsif arg != nil
-    		self.my_each_with_index { |element, index| arr << arg.call(element)}
-    	end
-    	return arr
+   def my_map(block = nil) 
+
+      if block == nil
+        self.my_each_with_index{ |element,index| self[index] = yield(element)}
+      elsif block != nil && block_given?
+        self.my_each_with_index{ |element,index| self[index] = block.call(element)}
+      else block
+        self.my_each_with_index{ |element,index| self[index] = block.call(element)}
+      end
+
+      return self
     end
 
     def my_inject(initial = nil)
@@ -64,14 +67,10 @@ module Enumerable
       else
         accumulator = initial
       end
-
-      self.my_each do |element|
-        accumulator = yield(accumulator,element)
-      end
+      self.my_each {|element| accumulator = yield(accumulator,element)}       
       return accumulator
     end
 end
-
 
 
 def multiply_els(numberList)
@@ -79,17 +78,12 @@ def multiply_els(numberList)
 end
 
 
-var1 = multiply_els([2,8,10])
-print var1
-puts ""
+# var1 = multiply_els([2,8,10])
+# p var1
 
 
+# arg = Proc.new{|i| i * i}
 
-arg = Proc.new{|string| string.upcase}
-
-# var2 = ["a", "b", "c"].my_map(arg)
+# var2 = [1, 2, 4, 7, 9].my_map(arg)
 # print var2
 
-
-
-# p [1,2,4,5,6].map{|i, e|  i * 2 }
