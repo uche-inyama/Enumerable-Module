@@ -47,17 +47,14 @@ module Enumerable
       return count
     end
 
-   def my_map(block = nil) 
-
-      if block == nil
-        self.my_each_with_index{ |element,index| self[index] = yield(element)}
-      elsif block != nil && block_given?
-        self.my_each_with_index{ |element,index| self[index] = block.call(element)}
-      else block
-        self.my_each_with_index{ |element,index| self[index] = block.call(element)}
-      end
-
-      return self
+  def my_map(proc=nil)
+    	arr = []
+    	if proc == nil
+    	   self.my_each_with_index{ | element, index | arr << yield(element)}
+    	else
+    		self.my_each_with_index { |element, index| arr << proc.call(element)}
+    	end
+    	return arr
     end
 
     def my_inject(initial = nil)
@@ -67,7 +64,8 @@ module Enumerable
       else
         accumulator = initial
       end
-      self.my_each {|element| accumulator = yield(accumulator,element)}       
+
+      self.my_each {|element| accumulator = yield(accumulator,element)} 
       return accumulator
     end
 end
@@ -82,8 +80,15 @@ end
 # p var1
 
 
-# arg = Proc.new{|i| i * i}
+#  arg = Proc.new{|i| i * i}
+#  p var2 = [1, 2, 4, 7, 9].my_map(arg)
 
-# var2 = [1, 2, 4, 7, 9].my_map(arg)
-# print var2
+#  p ["a", "b", "c", "d", "e", "f"].my_map{|a|  a.upcase}
 
+# p (5..10).inject { |sum, n| sum + n }  
+# p (5..10).inject(1) { |product, n| product * n }
+
+# longest = %w{ cat sheep bear }.inject do |memo, word|
+#    memo.length > word.length ? memo : word
+# end
+# p longest 
