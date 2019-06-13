@@ -89,7 +89,7 @@ end
 
 # p ["a", "b", "c", "d", "e", "f"].my_map{|a|  a.upcase}
 
-p (5..10).inject { |sum, n| sum + n }  
+# p (5..10).inject { |sum, n| sum + n }  
 # p (5..10).inject(1) { |product, n| product * n }
 
 # longest = %w{ cat sheep bear }.inject do |memo, word|
